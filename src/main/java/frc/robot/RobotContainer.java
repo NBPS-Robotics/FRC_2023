@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.commands.LiftDownCommand; 
+import frc.robot.commands.LiftUpCommand;
 // import frc.robot.commands.Autos;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -22,8 +27,7 @@ public class RobotContainer {
 
 
   Joystick m_joystick1 = new Joystick(JoystickConstants.kJoystick1Port);
-  CommandXboxController m_driverController =
-      new CommandXboxController(0);
+  Joystick m_joystick2 = new Joystick(JoystickConstants.kJoystick2Port);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -44,7 +48,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
+    new JoystickButton(m_joystick, Button.kRightBumper.value)
+      .onTrue(m_liftUpCommand);
   }
 
  
