@@ -4,21 +4,19 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.MecanumControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ArcadeDrive;
-// import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DeployStopperCommand;
 import frc.robot.commands.RetractStopperCommand;
 import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.StopperSubsystem;
 import frc.robot.subsystems.TrajectorySubsystem;
 
@@ -27,20 +25,27 @@ import frc.robot.subsystems.TrajectorySubsystem;
 
 public class RobotContainer {
   
-  final XboxController m_driverController = new XboxController(0);
-  Joystick m_joystick1 = new Joystick(1);
-  Joystick m_joystick2 = new Joystick(1);
+  CommandXboxController m_driverController= new CommandXboxController(0); 
 
+  Joystick m_joystick1 = new Joystick(0);
+  Joystick m_joystick2 = new Joystick(0);
+  
   //Subsystems
   final StopperSubsystem m_stopperSubsystem = new StopperSubsystem();
   final DriveSubsystem m_drive = new DriveSubsystem();
+  //Triggers
+  Trigger aButton = m_driverController.a();
+  Trigger bButton = m_driverController.b();
   
+
   // //Commands
   private final ArcadeDrive m_ArcadeDrive = new ArcadeDrive(m_drive, () -> m_joystick2.rightY(),
    () -> m_joystick2.rightX(),
     () -> m_joystick2.leftX());
-  private final DeployStopperCommand m_deployStopperCommand = new DeployStopperCommand(m_stopperSubsystem);
-  private final RetractStopperCommand m_retractStopperCommand = new RetractStopperCommand(m_stopperSubsystem);
+
+  final DeployStopperCommand m_deployStopperCommand = new DeployStopperCommand(m_stopperSubsystem);
+  final RetractStopperCommand m_retractStopperCommand = new RetractStopperCommand(m_stopperSubsystem);
+  
   MecanumControllerCommand mecanumControllerCommand = new MecanumControllerCommand(
     TrajectorySubsystem.exampleTrajectory,
     m_drive::getPose,
@@ -74,11 +79,8 @@ public class RobotContainer {
 
  
   private void configureBindings() { 
-    new JoystickButton(m_driverController, Button.kA.value)
-      .onTrue(m_deployStopperCommand);
-
-    new JoystickButton(m_driverController, Button.kB.value)
-      .onTrue(m_retractStopperCommand);
+    aButton.onTrue(m_deployStopperCommand);
+    bButton.onTrue(m_retractStopperCommand);
   }
 
  

@@ -71,6 +71,11 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", m_field);
   }
 
+
+  // public void test(){
+  //   m_frontLeftMotor.set(0.5);
+  // }
+
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
