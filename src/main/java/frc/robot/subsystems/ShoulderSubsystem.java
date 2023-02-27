@@ -4,65 +4,63 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.XboxController;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class LiftSubsystem extends SubsystemBase {
-    
-    Joystick m_stick = new Joystick(0);
 
+public class ShoulderSubsystem extends SubsystemBase {
+    
+    // Joystick m_stick = new Joystick(0);
+    private final XboxController m_driverController = new XboxController(0);
 
     private final TalonSRX m_leftLead; 
     private final TalonSRX m_leftFollow; 
-    private final TalonSRX m_rightLead; 
+    private final TalonSRX m_rightFollow2; 
     private final TalonSRX m_rightFollow; 
+    Encoder encoder; 
+    double shoulderDistance;
+ 
 
-
-
-  public LiftSubsystem() {
+  public ShoulderSubsystem(){
         TalonSRXConfiguration config = new TalonSRXConfiguration();
         config.peakCurrentLimit = 133;
         config.peakCurrentDuration = 1500;
         config.continuousCurrentLimit = 120;
-
-
-        m_leftLead = new TalonSRX(6);
-        m_rightLead =  new TalonSRX(8);
+        m_leftLead = new TalonSRX(3);
         m_leftLead.configAllSettings(config);
-        m_rightLead.configAllSettings(config);
-
         m_leftLead.setInverted(false);
-        m_rightLead.setInverted(true);
-
-
+        m_rightFollow2 =  new TalonSRX(8);
         m_leftFollow =  new TalonSRX(7); 
-        m_rightFollow =  new TalonSRX(9);
+        m_rightFollow =  new TalonSRX(4);
         m_leftFollow.configAllSettings(config);
         m_rightFollow.configAllSettings(config);
-
+        m_rightFollow2.configAllSettings(config);
         m_leftFollow.follow(m_leftLead);
-        m_rightFollow.follow(m_rightLead);
-
+        m_rightFollow.follow(m_leftLead);
+        m_rightFollow2.follow(m_leftLead);
         m_leftFollow.setInverted(InvertType.FollowMaster);
         m_rightFollow.setInverted(InvertType.FollowMaster);
+        m_rightFollow2.setInverted(InvertType.FollowMaster);
+
+        encoder = new Encoder(0, 1, false, Encoder.EncodingType.k2X);
+        getDistance();
+        SmartDashboard.putNumber("Shoulder Distance", shoulderDistance);
   }
-
-  public void liftUp(){
-    m_leftLead.set(TalonSRXControlMode.PercentOutput, m_stick.getY() * .5);
-    m_rightLead.set(TalonSRXControlMode.PercentOutput, m_stick.getY() * .5);
-
+  
+  public double getDistance(){
+    shoulderDistance = encoder.getDistance();
+    return shoulderDistance; 
   }
+ 
+ 
+  
 
-  public void liftDown(){
-    m_leftLead.setInverted(true);
-    m_rightLead.setInverted(false);
-    m_leftLead.set(TalonSRXControlMode.PercentOutput, m_stick.getX() * .5);
-    m_rightLead.set(TalonSRXControlMode.PercentOutput,m_stick.getX() * .5);
 
-}
 
   public CommandBase liftCommand() {
     

@@ -1,21 +1,16 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.StopperSubsystem;
 
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class LiftUpCommand extends CommandBase {
+public class DeployStopperCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final LiftSubsystem m_subsystem;
+  private final StopperSubsystem m_subsystem;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-  public LiftUpCommand(LiftSubsystem subsystem) {
+  public DeployStopperCommand(StopperSubsystem subsystem) {
     m_subsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -25,7 +20,7 @@ public class LiftUpCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.liftUp();
+    m_subsystem.deployStop();
   }
 
   @Override

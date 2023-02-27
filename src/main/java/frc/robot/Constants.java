@@ -12,13 +12,10 @@ public class Constants {
 
         //wheel ports
         public static final int kFrontLeftWheelPort = 2;
-        public static final int kFrontRightWheelPort = 3;
-        public static final int kBackLeftWheelPort = 6;
-        public static final int kBackRightWheelPort = 4;
+        public static final int kFrontRightWheelPort = 9;
+        public static final int kBackLeftWheelPort = 1;
+        public static final int kBackRightWheelPort = 10;
 
-
-        public static final int kLeftMotorPort = 2; 
-        public static final int kRightMotorPort = 6; 
         
         public static final double metersPerRotation = 0.4787787204060999;
 
@@ -130,7 +127,7 @@ public class Constants {
         public static final double kIdealShotSpeed = 0.5; //ideal motor speed to run the shooter at
         public static final double kTimeToChargeUp = 4; //time in seconds for the shooter to reach ideal speed
 
-
+        public static final double shooterSpeed = 2000; 
 
         public static final double kS = 0; //0.052824
         public static final double kV = 0; //0.12603
