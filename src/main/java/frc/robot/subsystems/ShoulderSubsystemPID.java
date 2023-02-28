@@ -24,15 +24,16 @@ public class ShoulderSubsystemPID extends SubsystemBase {
     Encoder encoder;
 
 
-    double kP = 1.0; 
+    double kP = .001; 
     double kI = 0.0;
     double kD = 0.0;
     double currentShoulderDistance; 
-    int targetPosition = -856; 
-    private final double maxSpeed = 0.25;
-    private final double minSpeed = 0.1;
-    PIDController m_pid = new PIDController(kP, kI, kD);  
-    double setPoint = 0.0;
+   // int targetPosition = -856; 
+   // private final double maxSpeed = 0.25;
+   // private final double minSpeed = 0.1;
+    PIDController m_pid = new PIDController(kP, kI, kD); 
+
+    double setPoint;
 
   
 
@@ -65,6 +66,13 @@ public class ShoulderSubsystemPID extends SubsystemBase {
       encoder.setSamplesToAverage(10);
       encoder.reset();
 
+      m_pid.setSetpoint(0);
+
+  }
+
+  @Override
+  public void periodic() {
+    calculate();
   }
 
   public void getDistance(){
@@ -77,31 +85,17 @@ public class ShoulderSubsystemPID extends SubsystemBase {
   
   }
 
-  @Override
-  public void periodic() {
-    calculate();
-  }
-
   public void moveShoulder(double pose) {
     m_pid.setSetpoint(pose);
     setPoint = pose; 
 }
 
   public void calculate(){
-    if (setPoint < encoder.get())
-        m_leftLead.set(TalonSRXControlMode.PercentOutput, MathUtil.clamp(m_pid.calculate(encoder.get()), -maxSpeed, maxSpeed));
+    if (setPoint < encoder.getDistance())
+        m_leftLead.set(TalonSRXControlMode.PercentOutput, m_pid.calculate(encoder.getDistance()));
     else
-        m_leftLead.set(TalonSRXControlMode.PercentOutput, MathUtil.clamp(m_pid.calculate(encoder.get()), (-maxSpeed * 0.5), (maxSpeed * 0.5)));
-
-  
-  
-      }
-
-
-
-
-
-
+        m_leftLead.set(TalonSRXControlMode.PercentOutput, m_pid.calculate(encoder.getDistance()));
+  }
 
 
 }
