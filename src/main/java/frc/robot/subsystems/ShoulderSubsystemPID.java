@@ -23,13 +23,18 @@ public class ShoulderSubsystemPID extends SubsystemBase {
 
     Encoder encoder;
 
+
+    double kP = 1.0; 
+    double kI = 0.0;
+    double kD = 0.0;
     double currentShoulderDistance; 
     int targetPosition = -856; 
     private final double maxSpeed = 0.25;
     private final double minSpeed = 0.1;
-    double kP = 0.0005; 
-    PIDController m_pid; 
-    double setPoint; 
+    PIDController m_pid = new PIDController(kP, kI, kD);  
+    double setPoint = 0.0;
+
+  
 
   public ShoulderSubsystemPID(){
 
@@ -59,14 +64,6 @@ public class ShoulderSubsystemPID extends SubsystemBase {
       encoder.setDistancePerPulse(1.0);
       encoder.setSamplesToAverage(10);
       encoder.reset();
-
-      double kI = 0.0;
-      double kD = 0.0;
-      double kF = 0.0;
-      m_pid = new PIDController(kP, kI, kD); 
-
-      setPoint = 0.0;
-
 
   }
 

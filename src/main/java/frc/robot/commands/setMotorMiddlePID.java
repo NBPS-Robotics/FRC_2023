@@ -17,7 +17,7 @@ public class setMotorMiddlePID extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveShoulder(-525.5);
+    m_subsystem.moveShoulder(8000);
   }
 
   @Override
