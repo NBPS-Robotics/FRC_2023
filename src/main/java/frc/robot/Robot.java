@@ -21,6 +21,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.m_drive.resetNavx();
     m_robotContainer.m_drive.motorBrake();
+    m_robotContainer.m_ShoulderSubsystemPID.resetEncoder();
   }
 
   @Override

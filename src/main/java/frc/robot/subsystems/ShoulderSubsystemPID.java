@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,11 +24,12 @@ public class ShoulderSubsystemPID extends SubsystemBase {
     Encoder encoder;
 
     double currentShoulderDistance; 
-    int targetPosition = 8000; 
+    int targetPosition = -856; 
     private final double maxSpeed = 0.25;
     private final double minSpeed = 0.1;
-    private final double kP = 0.1;
-
+    double kP = 0.0005; 
+    PIDController m_pid; 
+    double setPoint; 
 
   public ShoulderSubsystemPID(){
 
@@ -35,11 +38,11 @@ public class ShoulderSubsystemPID extends SubsystemBase {
       config.peakCurrentDuration = 1500;
       config.continuousCurrentLimit = 120;
       
-      m_leftLead = new TalonSRX(3);
+      m_leftLead = new TalonSRX(8);
       m_leftLead.configAllSettings(config);
       m_leftLead.setInverted(false);
      
-      m_rightFollow2 =  new TalonSRX(8);
+      m_rightFollow2 =  new TalonSRX(3);
       m_leftFollow =  new TalonSRX(4); 
       m_rightFollow =  new TalonSRX(7);
       m_leftFollow.configAllSettings(config);
@@ -57,10 +60,12 @@ public class ShoulderSubsystemPID extends SubsystemBase {
       encoder.setSamplesToAverage(10);
       encoder.reset();
 
-      double kP = 0.1;
       double kI = 0.0;
       double kD = 0.0;
       double kF = 0.0;
+      m_pid = new PIDController(kP, kI, kD); 
+
+      setPoint = 0.0;
 
 
   }
@@ -72,25 +77,22 @@ public class ShoulderSubsystemPID extends SubsystemBase {
 
   public void resetEncoder(){
     encoder.reset();
+  
   }
 
-  public void calculate(){
-    int error = targetPosition - encoder.get();
-    double motorOutput = kP * error;
+  @Override
+  public void periodic() {
+    calculate();
+  }
 
-    if(motorOutput > maxSpeed){
-      motorOutput = maxSpeed;
-    }
-    else if(motorOutput < -maxSpeed){
-      motorOutput = -maxSpeed;
-    }
-    else if(motorOutput > 0 && motorOutput < minSpeed){
-      motorOutput = minSpeed; 
-    }
-    else if(motorOutput < 0 && motorOutput > -minSpeed){
-      motorOutput = -minSpeed;
-    }
-    m_leftLead.set(TalonSRXControlMode.PercentOutput, motorOutput);
+  public void moveShoulder(double pose) {
+    m_pid.setSetpoint(pose);
+    setPoint = pose; 
+}
+
+  public void calculate(){
+    if (setPoint < encoder.get())
+        m_leftLead.set(TalonSRXControlMode.PercentOutput, MathUtil.clamp(m_pid.calculate(encoder.get()), -maxSpeed, maxSpeed));
   }
 
 
