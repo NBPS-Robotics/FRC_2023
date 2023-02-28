@@ -93,7 +93,12 @@ public class ShoulderSubsystemPID extends SubsystemBase {
   public void calculate(){
     if (setPoint < encoder.get())
         m_leftLead.set(TalonSRXControlMode.PercentOutput, MathUtil.clamp(m_pid.calculate(encoder.get()), -maxSpeed, maxSpeed));
-  }
+    else
+        m_leftLead.set(TalonSRXControlMode.PercentOutput, MathUtil.clamp(m_pid.calculate(encoder.get()), (-maxSpeed * 0.5), (maxSpeed * 0.5)));
+
+  
+  
+      }
 
 
 
