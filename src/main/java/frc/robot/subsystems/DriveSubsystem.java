@@ -51,9 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
   NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
   NetworkTableEntry m_headingEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Heading");
-  /**
-   * Creates a new DriveSubsystem.
-   */
+ 
   public DriveSubsystem() {
 
     m_drive.setSafetyEnabled(false);
@@ -64,22 +62,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     motorBrake();
 
-  //  m_odometry.resetPosition(new Pose2d(0,0, new Rotation2d(0)), new Rotation2d(0));
-
     setEncoders();
     setEncoderVelo();
     SmartDashboard.putData("Field", m_field);
   }
 
-
-  // public void test(){
-  //   m_frontLeftMotor.set(0.5);
-  // }
-
   @Override
   public void periodic() {
-    // Update the odometry in the periodic block
-   // m_odometry.update(navx.getRotation2d(), getCurrentWheelSpeeds());
     m_field.setRobotPose(getPose());
 
     var translation = getPose().getTranslation();
@@ -115,31 +104,15 @@ public class DriveSubsystem extends SubsystemBase {
     m_backLeftMotor.setIdleMode(IdleMode.kCoast);
     m_backRightMotor.setIdleMode(IdleMode.kCoast);
   }
-  /**
-   * Drives the robot using base mecanum (y stick 1 = forward, x stick 1 = sideways, x stick 2 = rotation)
-   *
-   * @param x = speed in x direction
-   * @param y = speed in y direction
-   * @param c = rotation speed
-   */
+ 
   public void mecanumDrive(double x, double y, double c) {
     m_drive.driveCartesian(x,-y,c);
   }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
 
-  /**
-   * Returns the current wheel speeds of the robot.
-   *
-   * @return The current wheel speeds.
-   */
   public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
     return new MecanumDriveWheelSpeeds(m_frontLeftEncoder.getVelocity(),
       m_frontRightEncoder.getVelocity(),
@@ -147,22 +120,10 @@ public class DriveSubsystem extends SubsystemBase {
       m_backRightEncoder.getVelocity());
   }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    //m_odometry.resetPosition(pose, navx.getRotation2d());
   }
-  
-  /**
-   * Controls the left and right sides of the drive directly with voltages.
-   *
-   * @param leftVolts  the commanded left output
-   * @param rightVolts the commanded right output
-   */
+
   public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts){
     m_frontLeftMotor.setVoltage(volts.frontLeftVoltage);
     m_frontRightMotor.setVoltage(volts.frontRightVoltage);
@@ -170,9 +131,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_backRightMotor.setVoltage(volts.rearRightVoltage);
 }
 
-  /**
-   * Resets the drive encoders to currently read a position of 0.
-   */
   public void resetEncoders() {
     m_frontLeftEncoder.setPosition(0);
     m_frontRightEncoder.setPosition(0);
@@ -180,80 +138,38 @@ public class DriveSubsystem extends SubsystemBase {
     m_backRightEncoder.setPosition(0);
   }
 
-  /**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
   public double getAverageEncoderDistance() {
     return (m_frontLeftEncoder.getPosition() + m_frontRightEncoder.getPosition()) / 2.0;
   }
 
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
   public RelativeEncoder getFrontLeftEncoder() {
     return m_frontLeftEncoder;
   }
 
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
   public RelativeEncoder getFrontRightEncoder() {
     return m_frontRightEncoder;
   }
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
+  
   public RelativeEncoder getBackLeftEncoder() {
     return m_backLeftEncoder;
   }
 
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
   public RelativeEncoder getBackRightEncoder() {
     return m_backRightEncoder;
   }
 
-  /**
-   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
   public void setMaxOutput(double maxOutput) {
     m_drive.setMaxOutput(maxOutput);
   }
 
-  /**
-   * Zeroes the heading of the robot.
-   */
   public void zeroHeading() {
     navx.reset();
   }
 
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
   public double getHeading() {
     return navx.getAngle();
   }
 
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
   public double getTurnRate() {
     return -navx.getRate();
   }

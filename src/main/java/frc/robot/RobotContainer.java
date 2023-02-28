@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,13 +14,14 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DeployStopperCommand;
 import frc.robot.commands.RetractStopperCommand;
+import frc.robot.commands.setMotorMiddlePID;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShoulderSubsystemPID;
 import frc.robot.subsystems.StopperSubsystem;
 import frc.robot.subsystems.TrajectorySubsystem;
+import frc.robot.subsystems.WristSubsystem;
 
  
-
-
 public class RobotContainer {
   
   CommandXboxController m_driverController= new CommandXboxController(0); 
@@ -33,10 +32,14 @@ public class RobotContainer {
   //Subsystems
   final StopperSubsystem m_stopperSubsystem = new StopperSubsystem();
   final DriveSubsystem m_drive = new DriveSubsystem();
+  //final ShoulderSubsystem m_shoulderSubsystem = new ShoulderSubsystem(); 
+  final ShoulderSubsystemPID m_ShoulderSubsystemPID = new ShoulderSubsystemPID(); 
+  final WristSubsystem m_wristSubsystem = new WristSubsystem();
+
   //Triggers
   Trigger aButton = m_driverController.a();
   Trigger bButton = m_driverController.b();
-  
+  Trigger xButton = m_driverController.x();
 
   // //Commands
   private final ArcadeDrive m_ArcadeDrive = new ArcadeDrive(m_drive, () -> m_joystick2.rightY(),
@@ -45,30 +48,27 @@ public class RobotContainer {
 
   final DeployStopperCommand m_deployStopperCommand = new DeployStopperCommand(m_stopperSubsystem);
   final RetractStopperCommand m_retractStopperCommand = new RetractStopperCommand(m_stopperSubsystem);
+  final setMotorMiddlePID m_SetMotorMiddlePID = new setMotorMiddlePID(m_ShoulderSubsystemPID); 
   
   MecanumControllerCommand mecanumControllerCommand = new MecanumControllerCommand(
     TrajectorySubsystem.exampleTrajectory,
     m_drive::getPose,
     DriveConstants.kFeedforward,
     DriveConstants.kDriveKinematics,
-    // Position contollers
     DriveConstants.xController,
     DriveConstants.yController,
     DriveConstants.thetaController,
-    // Needed for normalizing wheel speeds
     DriveConstants.kMaxSpeedMetersPerSecond,
-    // Velocity PID's
     DriveConstants.driveController,
     DriveConstants.driveController,
     DriveConstants.driveController,
     DriveConstants.driveController,
     m_drive::getCurrentWheelSpeeds,
-    m_drive::setDriveMotorControllersVolts, // Consumer for the output motor voltages
+    m_drive::setDriveMotorControllersVolts, 
     m_drive);
     
-    private SendableChooser<Command> driveChooser = new SendableChooser<Command>();
+  private SendableChooser<Command> driveChooser = new SendableChooser<Command>();
  
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     driveChooser.setDefaultOption("Arcade Drive", m_ArcadeDrive);
     SmartDashboard.putData("Drive Mode", driveChooser);
@@ -77,13 +77,12 @@ public class RobotContainer {
     SmartDashboard.putNumber("NAVX Angle", m_drive.getHeading());
   }
 
- 
   private void configureBindings() { 
     aButton.onTrue(m_deployStopperCommand);
     bButton.onTrue(m_retractStopperCommand);
+    xButton.onTrue(m_SetMotorMiddlePID);
   }
 
- 
   // public Command getAutonomousCommand() {
   //   // An example command will be run in autonomous
   //   // return Autos.exampleAuto(m_exampleSubsystem);

@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.StopperSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ShoulderSubsystemPID;
 
-public class DeployStopperCommand extends CommandBase {
+public class setMotorMiddlePID extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final StopperSubsystem m_subsystem;
+  private final ShoulderSubsystemPID m_subsystem;
 
-  public DeployStopperCommand(StopperSubsystem subsystem) {
+  public setMotorMiddlePID(ShoulderSubsystemPID subsystem) {
     m_subsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -17,7 +17,7 @@ public class DeployStopperCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.deployStop();
+    m_subsystem.calculate();
   }
 
   @Override

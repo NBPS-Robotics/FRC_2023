@@ -72,25 +72,6 @@ public class Constants {
          = new ProfiledPIDController(kPThetaController, 0, 0, kThetaControllerConstraints);
     
     }
-    public static final class IntakeConstants {
-        public static final int kIntakePort = 5;
-        public static final double kIntakeSpeed = 1;
-
-        public static final int kIntakeDropPort = 13;
-        public static final double kIntakeDropSpeed = 0.6;
-        public static final double kIntakeHoldSpeed = 0.1;
-        public static final int kIntakeDropTime = 1000;
-    }
-
-    public static final class ConveyorConstants{
-        public static final int kConveyorPort = 1;
-        public static final double kConveyorSpeed = 0.7;
-    }
-
-    public static final class FeederConstants{
-        public static final int kFeederPort = 11;
-        public static final double kFeederSpeed = 0.4;
-    }
 
     public static final class LiftConstants{
         public static final int kLift1Port = 8;
@@ -110,36 +91,6 @@ public class Constants {
         public static final double kMaxLiftPower = 1;
     }
 
-    public static final class TurretConstants{
-        public static final int kTurretPort = 12;
-
-        public static final double kTurretLimit = 9;
-
-        public static final double kTurretSpeed = 0.5;
-    }
-
-    public static final class ShooterConstants {
-        public static final int kShooter1Port = 10;
-        public static final int kShooter2Port = 9;
-
-        public static final int kServoPort = 1;
-
-        public static final double kIdealShotSpeed = 0.5; //ideal motor speed to run the shooter at
-        public static final double kTimeToChargeUp = 4; //time in seconds for the shooter to reach ideal speed
-
-        public static final double shooterSpeed = 2000; 
-
-        public static final double kS = 0; //0.052824
-        public static final double kV = 0; //0.12603
-        public static final double kA = 0; //0.0055052
-
-        public static final double kP = 0.002; //2.5946 * Math.pow(10, -10)
-        public static final double kI = 0;
-        public static final double kD = 0;
-        public static final double kF = 8.6;
-
-        public static TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10000, 1000);
-    }
     public static final class JoystickConstants {
         public static final int kXStick1 = 0;
         public static final int kYStick1 = 1;
@@ -150,28 +101,6 @@ public class Constants {
 
         public static final int kJoystick1Port = 0;
         public static final int kJoystick2Port = 1;
-    }
-
-    public static final class LimelightConstants {
-        public static final double kIdealStrafeValue = 0.4;
-        public static final double kIdealForwardValue = 0.2;
-        public static final double kIdealRotateValue = 0.15;
-
-        public static final double kIdealAreaValue = 2.5;
-        public static final double kAreaRangeValue = 0.3;
-
-        public static final double kP = 0.005;
-
-        public final static double STEER_K = 0.05; // how hard to turn turret
-        public final static double SHOOTER_K = 1.6; // change power of shooter to reach target //1.75
-        public final static double SHOOTER_F = 0;
-        public final static double DESIRED_TARGET_AREA = 0.75; // Area of the target when the robot reaches the wall
-        public final static double MAX_DRIVE = 0.6; // Simple speed limit so we don't drive too fast
-    }
-
-    public static final class SonarConstants{
-        public static final int sonar1 = 0;
-        public static final int sonar2 = 1;
     }
 
     public static final class BlinkinConstants{
@@ -187,12 +116,7 @@ public class Constants {
         public static final double kWhite = 0.93;
         public static final double kBlack = 0.99;
     }
-    public static final class AutoConstants {
-        public static final double kAutoShootPower = -0.9;
-        public static final double kAutoChargeUpTime = 2;
-        public static final double kAutoShootEndTime = 5;
-
-      }
+    public static final class AutoConstants {}
 
     
 }
