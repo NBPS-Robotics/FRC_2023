@@ -21,12 +21,12 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.m_drive.resetNavx();
     m_robotContainer.m_drive.motorBrake();
-    m_robotContainer.m_ShoulderSubsystemPID.resetEncoder();
+    m_robotContainer.m_shoulderpid.resetEncoder();
   }
 
   @Override
   public void robotPeriodic() {
-  m_robotContainer.m_ShoulderSubsystemPID.getDistance();
+  m_robotContainer.m_shoulderpid.getDistance();
   m_robotContainer.m_wristSubsystem.getWristEncoderDistance();
     CommandScheduler.getInstance().run();
   }
@@ -55,10 +55,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_robotContainer.m_drive.motorBrake();
-    // m_robotContainer.m_shoulderSubsystem.resetEncoder();
-    m_robotContainer.m_ShoulderSubsystemPID.resetEncoder();
-
-   
+    m_robotContainer.m_shoulderpid.resetEncoder();
+    // m_robotContainer.m_shoulderSubsystem.resetEncoder();   
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

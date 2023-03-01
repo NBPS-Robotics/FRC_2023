@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.shoulderpid;
 
-public class setMotorMiddlePID extends CommandBase {
+public class setMotorCompact extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final shoulderpid m_subsystem;
 
-  public setMotorMiddlePID(shoulderpid subsystem) {
+  public setMotorCompact(shoulderpid subsystem) {
     m_subsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -17,7 +17,7 @@ public class setMotorMiddlePID extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveArm(-856.0);
+    m_subsystem.motorZero();
   }
 
   @Override
