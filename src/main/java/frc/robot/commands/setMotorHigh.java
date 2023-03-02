@@ -20,8 +20,8 @@ public class setMotorHigh extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveArm(-3068.0);
-    m_wristSubsystem.moveWrist(91000.0); 
+    m_subsystem.moveArm(-3691.0);
+    m_wristSubsystem.moveWrist(97354.0); 
   }
 
   @Override

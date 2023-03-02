@@ -21,8 +21,8 @@ public class setMotorMiddle extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveArm(-1875.0);
-    m_wristSubsystem.moveWrist(84159.0);
+    m_subsystem.moveArm(-2843.5);
+    m_wristSubsystem.moveWrist(61267.0);
   }
 
   @Override

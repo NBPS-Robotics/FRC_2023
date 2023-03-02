@@ -20,8 +20,8 @@ public class setMotorRetrieval extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveArm(-498.0);
-    m_wristSubsystem.moveWrist(62100.0); //downwards out
+    m_subsystem.moveArm(-708.0);
+    m_wristSubsystem.moveWrist(63242.0); //downwards out
   }
 
   @Override

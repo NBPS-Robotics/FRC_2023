@@ -25,6 +25,10 @@ public class clawSubsystem extends SubsystemBase {
    public void closeClaw(){
     m_claw.set(TalonSRXControlMode.PercentOutput, -0.5);
    }
+
+   public void noPowerClaw(){
+      m_claw.set(TalonSRXControlMode.PercentOutput, 0);
+     }
    
 
 }

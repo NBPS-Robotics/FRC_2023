@@ -183,12 +183,24 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   //autonmous
-  public void simpleAuto(){
-    m_frontLeftMotor.set(0.3);
-    m_frontRightMotor.set(0.3);
-    m_backRightMotor.set(0.3);
-    m_backLeftMotor.set(0.3);
-    wait(1500);
+  public void moveBackAuto(){
+    m_frontLeftMotor.set(-0.3);
+    m_frontRightMotor.set(-0.3);
+    m_backRightMotor.set(-0.3);
+    m_backLeftMotor.set(-0.3);
+    wait(2000);
+    m_frontLeftMotor.set(0.0);
+    m_frontRightMotor.set(0.0);
+    m_backRightMotor.set(0.0);
+    m_backLeftMotor.set(0.0);
+  }
+
+  public void moveBackMoreAuto(){
+    m_frontLeftMotor.set(-0.3);
+    m_frontRightMotor.set(-0.3);
+    m_backRightMotor.set(-0.3);
+    m_backLeftMotor.set(-0.3);
+    wait(4000);
     m_frontLeftMotor.set(0.0);
     m_frontRightMotor.set(0.0);
     m_backRightMotor.set(0.0);
