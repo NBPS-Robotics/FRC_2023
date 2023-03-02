@@ -25,7 +25,7 @@ public class Constants {
 
         public static final double encoderVeloConversionFactor = metersPerRotation / gearRatio / 60;
         //drivetrain stuff
-        public static double speed = 0.5; //speed control 
+        public static double speed = 0.3; //speed control 
 
         public static double ks = 0.079775;
         public static double kv = 2.9146;

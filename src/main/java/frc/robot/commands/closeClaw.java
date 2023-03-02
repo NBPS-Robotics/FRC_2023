@@ -1,17 +1,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.WristSubsystem;
-import frc.robot.subsystems.shoulderpid;
+import frc.robot.subsystems.clawSubsystem;
 
-public class setMotorCompact extends CommandBase {
+
+public class closeClaw extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final shoulderpid m_subsystem;
-  private final WristSubsystem m_wristSubsystem; 
+  private final clawSubsystem m_subsystem;
 
-  public setMotorCompact(shoulderpid subsystem, WristSubsystem wristSub) {
+
+  public closeClaw(clawSubsystem subsystem) {
     m_subsystem = subsystem;
-    m_wristSubsystem = wristSub;
     addRequirements(subsystem);
   }
 
@@ -20,8 +19,7 @@ public class setMotorCompact extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveArm(0.0);
-    m_wristSubsystem.moveWrist(830.0); 
+    m_subsystem.closeClaw();
   }
 
   @Override

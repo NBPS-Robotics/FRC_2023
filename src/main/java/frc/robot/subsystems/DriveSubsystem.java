@@ -181,4 +181,29 @@ public class DriveSubsystem extends SubsystemBase {
   public void resetNavx() {
     navx.reset();
   }
+
+  //autonmous
+  public void simpleAuto(){
+    m_frontLeftMotor.set(0.3);
+    m_frontRightMotor.set(0.3);
+    m_backRightMotor.set(0.3);
+    m_backLeftMotor.set(0.3);
+    wait(1500);
+    m_frontLeftMotor.set(0.0);
+    m_frontRightMotor.set(0.0);
+    m_backRightMotor.set(0.0);
+    m_backLeftMotor.set(0.0);
+  }
+  
+  public static void wait(int ms)
+  {
+      try
+      {
+          Thread.sleep(ms);
+      }
+      catch(InterruptedException ex)
+      {
+          Thread.currentThread().interrupt(); 
+      }
+  }
 }

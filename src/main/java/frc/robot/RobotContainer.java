@@ -14,19 +14,25 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DeployStopperCommand;
 import frc.robot.commands.RetractStopperCommand;
+import frc.robot.commands.closeClaw;
+import frc.robot.commands.openClaw;
 import frc.robot.commands.setMotorCompact;
-import frc.robot.commands.setMotorMiddlePID;
+import frc.robot.commands.setMotorHigh;
+import frc.robot.commands.setMotorMiddle;
 import frc.robot.commands.setMotorRetrieval;
+import frc.robot.commands.speedButton;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.StopperSubsystem;
 import frc.robot.subsystems.TrajectorySubsystem;
 import frc.robot.subsystems.WristSubsystem;
+import frc.robot.subsystems.clawSubsystem;
 import frc.robot.subsystems.shoulderpid;
 
  
 public class RobotContainer {
   
   CommandXboxController m_driverController= new CommandXboxController(0); 
+  CommandXboxController m_coDriverController= new CommandXboxController(1); 
 
   Joystick m_joystick1 = new Joystick(0);
   Joystick m_joystick2 = new Joystick(0);
@@ -34,28 +40,43 @@ public class RobotContainer {
   //Subsystems
   final StopperSubsystem m_stopperSubsystem = new StopperSubsystem();
   final DriveSubsystem m_drive = new DriveSubsystem();
-  // final ShoulderSubsystemPID m_ShoulderSubsystemPID = new ShoulderSubsystemPID(); 
   final WristSubsystem m_wristSubsystem = new WristSubsystem();
   final shoulderpid m_shoulderpid = new shoulderpid();
+  final clawSubsystem m_clawSubsystem = new clawSubsystem();
+
 
   //Triggers
-  Trigger aButton = m_driverController.a();
-  Trigger bButton = m_driverController.b();
-  Trigger xButton = m_driverController.x();
-  Trigger yButton = m_driverController.y();
-  Trigger leftBumper = m_driverController.leftBumper(); 
-  Trigger rightBumper = m_driverController.rightBumper(); 
+  Trigger aButton = m_coDriverController.a();
+  Trigger bButton = m_coDriverController.b();
+  Trigger xButton = m_coDriverController.x();
+  Trigger yButton = m_coDriverController.y();
+  Trigger rightBumperCo = m_coDriverController.rightBumper();
+  Trigger leftBumperCo = m_coDriverController.leftBumper();
+  
+
+
+  Trigger dPadDown = m_driverController.povDown(); 
+  Trigger dPadUp = m_driverController.povUp();
+  Trigger rightBumper = m_driverController.rightBumper();
+  Trigger leftBumper = m_driverController.leftBumper();
+
+
 
   // //Commands
-  private final ArcadeDrive m_ArcadeDrive = new ArcadeDrive(m_drive, () -> m_joystick2.rightY(),
-   () -> m_joystick2.rightX(),
-    () -> m_joystick2.leftX());
+  private final ArcadeDrive m_ArcadeDrive = new ArcadeDrive(m_drive, () -> m_joystick2.leftY() *0.75,
+   () -> m_joystick2.leftX() * 0.75,
+    () -> m_joystick2.rightX()* 0.75);
 
   final DeployStopperCommand m_deployStopperCommand = new DeployStopperCommand(m_stopperSubsystem);
   final RetractStopperCommand m_retractStopperCommand = new RetractStopperCommand(m_stopperSubsystem);
-  final setMotorMiddlePID m_SetMotorMiddlePID = new setMotorMiddlePID(m_shoulderpid); 
-  final setMotorCompact m_resetEncoder = new setMotorCompact(m_shoulderpid); 
-  final setMotorRetrieval m_setMotoreRetrieval = new setMotorRetrieval(m_shoulderpid); 
+  final setMotorMiddle m_SetMotorMiddle = new setMotorMiddle(m_shoulderpid, m_wristSubsystem); 
+  final setMotorHigh m_SetMotorHigh = new setMotorHigh(m_shoulderpid, m_wristSubsystem); 
+  final setMotorCompact m_motorCompact = new setMotorCompact(m_shoulderpid, m_wristSubsystem); 
+  final setMotorRetrieval m_setMotoreRetrieval = new setMotorRetrieval(m_shoulderpid, m_wristSubsystem); 
+  final speedButton m_SpeedButtonBoost = new speedButton(1.0); 
+  final speedButton m_SpeedButtonNoBoost = new speedButton(0.3); 
+  final openClaw m_openClaw= new openClaw(m_clawSubsystem); 
+  final closeClaw m_closeClaw = new closeClaw(m_clawSubsystem); 
   
   MecanumControllerCommand mecanumControllerCommand = new MecanumControllerCommand(
     TrajectorySubsystem.exampleTrajectory,
@@ -85,12 +106,19 @@ public class RobotContainer {
   }
 
   private void configureBindings() { 
-    aButton.onTrue(m_setMotoreRetrieval);
-    bButton.onTrue(m_retractStopperCommand);
-    xButton.onTrue(m_SetMotorMiddlePID);
-    yButton.onTrue(m_resetEncoder);
-    leftBumper.onTrue(m_deployStopperCommand);
-    rightBumper.onTrue(m_retractStopperCommand);
+    aButton.onTrue(m_motorCompact);
+    xButton.onTrue(m_setMotoreRetrieval);
+    yButton.onTrue(m_SetMotorMiddle);
+    bButton.onTrue(m_SetMotorHigh);
+   
+    leftBumperCo.onTrue(m_closeClaw);
+    rightBumperCo.onTrue(m_openClaw);
+    
+    dPadUp.onTrue(m_deployStopperCommand);
+    dPadDown.onTrue(m_retractStopperCommand);
+    rightBumper.whileTrue(m_SpeedButtonBoost);
+    leftBumper.whileTrue( m_SpeedButtonNoBoost);
+
   }
 
   // public Command getAutonomousCommand() {

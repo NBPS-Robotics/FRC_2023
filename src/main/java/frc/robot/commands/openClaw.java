@@ -1,13 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.shoulderpid;
+import frc.robot.subsystems.clawSubsystem;
 
-public class setMotorMiddlePID extends CommandBase {
+
+public class openClaw extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final shoulderpid m_subsystem;
+  private final clawSubsystem m_subsystem;
 
-  public setMotorMiddlePID(shoulderpid subsystem) {
+
+  public openClaw(clawSubsystem subsystem) {
     m_subsystem = subsystem;
     addRequirements(subsystem);
   }
@@ -17,7 +19,7 @@ public class setMotorMiddlePID extends CommandBase {
 
   @Override
   public void execute() {
-    m_subsystem.moveArm(-856.0);
+    m_subsystem.openClaw();
   }
 
   @Override
