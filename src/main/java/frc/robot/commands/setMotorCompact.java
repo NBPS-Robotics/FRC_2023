@@ -29,6 +29,10 @@ public class setMotorCompact extends CommandBase {
 
   @Override
   public boolean isFinished() {
+
+    if(m_subsystem.getDistance() < 20 ){
+
+    }
     return false;
   }
 }
