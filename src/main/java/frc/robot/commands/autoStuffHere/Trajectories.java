@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.commands.autoStuffHere;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,48 +13,44 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
-public class TrajectorySubsystem extends SubsystemBase {
+public class Trajectories {
 
         // left
         private static Path LeftPickUpPath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Left_Pick_Up.wpilib.json");
-        
+
         private static Path LeftScorePath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Left_Score.wpilib.json");
-        
 
         // center
         private static Path CenterPickUpPath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Center_Pick_Up.wpilib.json");
-        
+
         private static Path CenterScorePath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Center_Score.wpilib.json");
-        
+
         private static Path CenterPickUpMorePath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Center_Pick_Up_More.wpilib.json");
-        
+
         private static Path CenterScoreMorePath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Center_Score_More.wpilib.json");
-        
 
         // right
         private static Path RightPickUpPath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Right_Pick_Up.wpilib.json");
-        
+
         private static Path RightScorePath = Filesystem.getDeployDirectory().toPath()
                         .resolve("paths/Right_Score.wpilib.json");
 
-
         private static TrajectoryConfig config = // create the config used for all trajectories
-            new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
-                    DriveConstants.kMaxAccelerationMetersPerSecondSquared)
-                            // Add kinematics to ensure max speed is actually obeyed
-                            .setKinematics(DriveConstants.kDriveKinematics);
-                            
-        //Blue Left
+                        new TrajectoryConfig(DriveConstants.kMaxSpeedMetersPerSecond,
+                                        DriveConstants.kMaxAccelerationMetersPerSecondSquared)
+                                        // Add kinematics to ensure max speed is actually obeyed
+                                        .setKinematics(DriveConstants.kDriveKinematics);
+
+        // Blue Left
         public static Trajectory LeftPickUp;
         public static Trajectory LeftScore;
 
@@ -67,11 +63,10 @@ public class TrajectorySubsystem extends SubsystemBase {
         // Blue Right
         public static Trajectory RightPickUp;
         public static Trajectory RightScore;
-        
 
-        public TrajectorySubsystem() {
+        public Trajectories() {
 
-                //left
+                // left
                 try {
                         LeftPickUp = TrajectoryUtil.fromPathweaverJson(LeftPickUpPath);
                 } catch (IOException ex) {
@@ -85,7 +80,7 @@ public class TrajectorySubsystem extends SubsystemBase {
                                         ex.getStackTrace());
                 }
 
-                //center
+                // center
                 try {
                         CenterPickUp = TrajectoryUtil.fromPathweaverJson(CenterPickUpPath);
                 } catch (IOException ex) {
@@ -111,7 +106,7 @@ public class TrajectorySubsystem extends SubsystemBase {
                                         ex.getStackTrace());
                 }
 
-                //right
+                // right
                 try {
                         RightPickUp = TrajectoryUtil.fromPathweaverJson(RightPickUpPath);
                 } catch (IOException ex) {
@@ -125,7 +120,7 @@ public class TrajectorySubsystem extends SubsystemBase {
                                         ex.getStackTrace());
                 }
         }
-        
+
         public Trajectory getLeftPickUp() {
                 return LeftPickUp;
         }
@@ -159,20 +154,19 @@ public class TrajectorySubsystem extends SubsystemBase {
         }
 
         public static Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(1, 0)),
-            // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(2, 0, new Rotation2d(0)), config);
-
-        public static Trajectory anotherTrajectory =
-                TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
+                        // Start at the origin facing the +X direction
                         new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
+                        // Pass through these two interior waypoints, making an 's' curve path
+                        List.of(new Translation2d(1, 0)),
+                        // End 3 meters straight ahead of where we started, facing forward
+                        new Pose2d(2, 0, new Rotation2d(0)), config);
+
+        public static Trajectory anotherTrajectory = TrajectoryGenerator.generateTrajectory(
+                        // Start at the origin facing the +X direction
+                        new Pose2d(0, 0, new Rotation2d(0)),
+                        // Pass through these two interior waypoints, making an 's' curve path
                         List.of(new Translation2d(1, 2)),
-            // End 3 meters straight ahead of where we started, facing forward
+                        // End 3 meters straight ahead of where we started, facing forward
                         new Pose2d(2, 5, new Rotation2d(0)),
                         config);
 }
